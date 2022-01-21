@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using MediatR;
+using Microsoft.AspNetCore.Mvc;
+using TourBy.Application.Services.Mediator.Posts.Command;
 using TourBy.Data.Persistent.Sql;
 using TourBy.Domain.Post;
 using TourBy.Web.Api.Models;
@@ -9,25 +11,19 @@ namespace TourBy.Web.Api.Controllers
     [ApiController]
     public class PostsController : ControllerBase
     {
-        private readonly ApplicationDbContext _dbContext;
+        private readonly IMediator _mediator;
 
-        public PostsController(ApplicationDbContext dbContext)
+        public PostsController(IMediator mediator)
         {
-            _dbContext = dbContext;
+            _mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
         }
 
         [HttpPost]
-        public async Task<IActionResult> AddPost([FromBody] AddPostModel post)
+        public async Task<IActionResult> AddPost([FromBody] AddPostCommand command)
         {
-            var dbPost = new Post
-            {
-                Title = post.Title
-            };
+            var result = await _mediator.Send(command);
 
-            await _dbContext.Posts.AddAsync(dbPost);
-            await _dbContext.SaveChangesAsync();
-
-            return StatusCode(201, "Post was successfully created.");
+            return StatusCode(201, $"Post {result.Title} was successfully created.");
         }
     }
 }
