@@ -17,6 +17,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\Application\TourBy.Application.Services\TourBy.Application.Services.csproj" />
     <ProjectReference Include="..\..\Data\TourBy.Data.Persistent.Sql\TourBy.Data.Persistent.Sql.csproj" />
   </ItemGroup>
 

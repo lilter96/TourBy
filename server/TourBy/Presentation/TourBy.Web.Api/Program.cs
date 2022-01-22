@@ -1,6 +1,11 @@
 using System.Reflection;
 using Microsoft.EntityFrameworkCore;
+using TourBy.Application.Services.Post;
+using TourBy.Data.Persistent.IRepository;
 using TourBy.Data.Persistent.Sql;
+using TourBy.Data.Persistent.Sql.Repository;
+using TourBy.Data.Persistent.Sql.Repository.Common;
+using TourBy.Data.Persistent.Sql.Transaction;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -16,6 +21,12 @@ builder.Services.AddDbContext<ApplicationDbContext>(
     {
         sqlOptions.MigrationsAssembly(typeof(ApplicationDbContext).GetTypeInfo().Assembly.GetName().Name);
     }));
+
+builder.Services.AddScoped<IDbContextProvider<ApplicationDbContext>, TransactionService>();
+builder.Services.AddScoped<ITransactionService, TransactionService>();
+builder.Services.AddScoped<IPostRepository, PostRepository>();
+builder.Services.AddScoped<IRouteRepository, RouteRepository>();
+builder.Services.AddTransient<IPostService, PostService>();
 
 var app = builder.Build();
 

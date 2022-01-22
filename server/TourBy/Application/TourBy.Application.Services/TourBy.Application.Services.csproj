@@ -7,11 +7,8 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\Data\TourBy.Data.Persistent.Sql\TourBy.Data.Persistent.Sql.csproj" />
     <ProjectReference Include="..\..\Domain\TourBy.Domain\TourBy.Domain.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Base\" />
   </ItemGroup>
 
 </Project>

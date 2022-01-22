@@ -1,14 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using TourBy.Domain.Base;
 
 namespace TourBy.Domain.Post;
 
-public class Post
+public class Post : Entity<Guid>
 {
-    public Guid Id { get; set; }
+    public Post(Guid id) 
+        : base(id)
+    {
+    }
     public string Title { get; set; }
+    public Guid RouteId { get; set; }
 }
 

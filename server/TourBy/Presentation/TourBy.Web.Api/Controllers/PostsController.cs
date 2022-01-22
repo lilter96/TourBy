@@ -1,7 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using TourBy.Data.Persistent.Sql;
+using TourBy.Application.Services.Post;
 using TourBy.Domain.Post;
 using TourBy.Web.Api.Models;
+using Route = TourBy.Domain.Route.Route;
 
 namespace TourBy.Web.Api.Controllers
 {
@@ -9,23 +10,28 @@ namespace TourBy.Web.Api.Controllers
     [ApiController]
     public class PostsController : ControllerBase
     {
-        private readonly ApplicationDbContext _dbContext;
+        private readonly IPostService _postService;
 
-        public PostsController(ApplicationDbContext dbContext)
+        public PostsController(
+            IPostService postService)
         {
-            _dbContext = dbContext;
+            _postService = postService;
         }
 
         [HttpPost]
         public async Task<IActionResult> AddPost([FromBody] AddPostModel post)
         {
-            var dbPost = new Post
+            var route = new Route(Guid.NewGuid())
             {
-                Title = post.Title
+                Name = "The best route in the world! Made by the transaction service!"
             };
 
-            await _dbContext.Posts.AddAsync(dbPost);
-            await _dbContext.SaveChangesAsync();
+            var dbPost = new Post(Guid.NewGuid())
+            {
+                Title = post.Title,
+            };
+
+            await _postService.CreatePostWithRouteAsync(dbPost, route);
 
             return StatusCode(201, "Post was successfully created.");
         }

@@ -8,6 +8,9 @@
 
   <ItemGroup>
     <Folder Include="Assembly\" />
+    <Folder Include="Base\" />
+    <Folder Include="Tag\" />
+    <Folder Include="Route\" />
   </ItemGroup>
 
 </Project>
